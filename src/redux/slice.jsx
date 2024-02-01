@@ -1,5 +1,6 @@
 import { statusFilters } from "./constants";
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchTasks } from "./operations";
 
 export const filtersSlice = createSlice({
     name: 'filters',
@@ -15,34 +16,47 @@ export const filtersSlice = createSlice({
 
 export const taskSlice = createSlice({
     name: 'task',
-    initialState: [
-    { id: 0, text: "Learn HTML and CSS", completed: true },
-    { id: 1, text: "Get good at JavaScript", completed: true },
-    { id: 2, text: "Master React", completed: false },
-    { id: 3, text: "Discover Redux", completed: false },
-    { id: 4, text: "Build amazing apps", completed: false },
-    ],
-    reducers: {
-        addTask(state, action) {
-            state.push(action.payload)
-        },
-        deleteTask(state, action) {
-            return state.filter(task => task.id !== action.payload)
-        },
-        toggleCompeted(state, action) {
-            return state.map(task => {
-                if (task.id !== action.payload) {
-                    return task;
-                }
-                return {...task, competed: !task.completed}
+    initialState: {
+        items: [],
+        isLoading: false,
+        error: null
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(fetchTasks.pending, (state, action) => {
+                state.isLoading = action.payload;
             })
-        }
-   } 
+            .addCase(fetchTasks.fullfield, (state, action) => {
+                state.isLoading = true;
+                state.error = action.payload;
+                state.items = action.payload;
+            })
+            .addCase(fetchTasks.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            
+    }
+//     reducers: {
+//         addTask(state, action) {
+//             state.push(action.payload)
+//         },
+//         deleteTask(state, action) {
+//             return state.filter(task => task.id !== action.payload)
+//         },
+//         toggleCompeted(state, action) {
+//             return state.map(task => {
+//                 if (task.id !== action.payload) {
+//                     return task;
+//                 }
+//                 return {...task, competed: !task.completed}
+//             })
+//         }
+//    } 
 })
 
 
 export const { setStatusFilter } = filtersSlice.actions;
 export const filterReducer = filtersSlice.reducer;
 
-export const { addTask, deleteTask, toggleCompeted } = taskSlice.actions;
+// export const { addTask, deleteTask, toggleCompeted } = taskSlice.actions;
 export const taskReducer = taskSlice.reducer;
