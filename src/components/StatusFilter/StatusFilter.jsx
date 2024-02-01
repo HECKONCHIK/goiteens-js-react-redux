@@ -3,14 +3,14 @@ import css from "./StatusFilter.module.css";
 import { statusFilters } from "../../redux/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiltersStatus } from "../../redux/selector";
-import { changeFilter } from "../../redux/action";
+import { setStatusFilter } from "../../redux/slice";
 
 export const StatusFilter = () => {
   const dispatch = useDispatch();
   const filter = useSelector(getFiltersStatus);
 
   const handleToggle = (value) => {
-   dispatch(changeFilter(value))
+   dispatch(setStatusFilter(value))
  }
 
   return (

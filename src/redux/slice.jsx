@@ -1,6 +1,6 @@
 import { statusFilters } from "./constants";
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchTasks } from "./operations";
+import { fetchTasks, toggleCompleted, deleteTasks } from "./operations";
 
 export const filtersSlice = createSlice({
     name: 'filters',
@@ -23,40 +23,66 @@ export const taskSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchTasks.pending, (state, action) => {
-                state.isLoading = action.payload;
-            })
-            .addCase(fetchTasks.fullfield, (state, action) => {
+            
+            // ADDTASK
+            .addCase(fetchTasks.pending, (state) => {
                 state.isLoading = true;
-                state.error = action.payload;
-                state.items = action.payload;
+            })
+            .addCase(fetchTasks.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.items.push(action.payload);
             })
             .addCase(fetchTasks.rejected, (state, action) => {
                 state.error = action.payload;
             })
+
+
+            // DELETETASK
+            .addCase(deleteTasks.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteTasks.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                const idx = state.items.findIndex((item) => item.id !== action.payload.id)
+                state.items.splice(idx, 1)
+            })
+            .addCase(deleteTasks.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+        
+        
+            // TOGGLECOMPLETED
+            .addCase(toggleCompleted.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(toggleCompleted.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                const idx = state.items.findIndex((item) => item.id !== action.payload.id)
+                state.items.splice(idx, 1, action.payload)
+            })
+            .addCase(toggleCompleted.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addMatcher(isAnyOf(fetchTasks.pending, deleteTasks.pending, toggleCompleted.pending), (state) => {
+                state.isLoading = true;
+            })
+            .addMatcher(isAnyOf(fetchTasks.rejected, deleteTasks.rejected, toggleCompleted.rejected), (state, action) => {
+                state.error = action.payload;
+            })
+            .addMatcher(isAnyOf(fetchTasks.fulfilled, deleteTasks.fulfilled, toggleCompleted.fulfilled), (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+            })
+        
             
     }
-//     reducers: {
-//         addTask(state, action) {
-//             state.push(action.payload)
-//         },
-//         deleteTask(state, action) {
-//             return state.filter(task => task.id !== action.payload)
-//         },
-//         toggleCompeted(state, action) {
-//             return state.map(task => {
-//                 if (task.id !== action.payload) {
-//                     return task;
-//                 }
-//                 return {...task, competed: !task.completed}
-//             })
-//         }
-//    } 
 })
 
 
 export const { setStatusFilter } = filtersSlice.actions;
 export const filterReducer = filtersSlice.reducer;
 
-// export const { addTask, deleteTask, toggleCompeted } = taskSlice.actions;
 export const taskReducer = taskSlice.reducer;
