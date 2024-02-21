@@ -5,12 +5,12 @@ import { TaskList } from "components/TaskList/TaskList";
 import { useSelector } from "react-redux";
 
 export const App = () => {
-  const tasks = useSelector((state) => state.tasks);
+  // const tasks = useSelector((state) => state.tasks);
   return (
     <Layout>
       <AppBar />
-      <TaskForm />
-      <TaskList />
+      {/* <TaskForm /> */}
+      {/* <TaskList /> */}
     </Layout>
   );
 };
