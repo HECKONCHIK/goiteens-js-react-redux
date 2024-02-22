@@ -1,5 +1,5 @@
 import { statusFilters } from "./constants";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { fetchTasks, toggleCompleted, deleteTasks } from "./operations";
 
 export const filtersSlice = createSlice({

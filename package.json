@@ -2,7 +2,7 @@
   "name": "goiteens-js-react-redux",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://HECKONCHIK.github.io/goiteens-js-react-redux/",
+  "homepage": "https://HECKONCHIK.github.io/",
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.1.0",
