@@ -1,6 +1,6 @@
 import { statusFilters } from "./constants";
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { fetchTasks, toggleCompleted, deleteTasks } from "./operations";
+import { fetchTasks, addTasks, toggleCompleted, deleteTasks } from "./operations";
 
 export const filtersSlice = createSlice({
     name: 'filters',
@@ -24,7 +24,7 @@ export const taskSlice = createSlice({
     extraReducers(builder) {
         builder
             
-            // ADDTASK
+            // FETCHTASK
             .addCase(fetchTasks.pending, (state) => {
                 state.isLoading = true;
             })
@@ -34,6 +34,20 @@ export const taskSlice = createSlice({
                 state.items.push(action.payload);
             })
             .addCase(fetchTasks.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+
+
+            // ADDTASK
+            .addCase(addTasks.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(addTasks.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.items.push(action.payload);
+            })
+            .addCase(addTasks.rejected, (state, action) => {
                 state.error = action.payload;
             })
 

@@ -5,7 +5,7 @@ import { TaskForm } from "components/TaskForm/TaskForm";
 import { TaskList } from "components/TaskList/TaskList";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { refreshUser } from "redux/auth/operations";
+import { refreshUser } from "../redux/auth/operations";
 
 export const App = () => {
 

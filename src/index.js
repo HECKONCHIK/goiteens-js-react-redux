@@ -10,10 +10,10 @@ import { router } from 'router';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <RouterProvider router={router}>
         <App />
       </RouterProvider>
-    {/* </Provider> */}
+    </Provider>
   </React.StrictMode>
 );

@@ -9,25 +9,27 @@ export const AuthSlice = createSlice({
             email: null
         },
         token: null,
-        isLoggedIn: false,
+        IsLoggedIn: false,
         IsRefreshing: false,
+        error: null,
     },
     extraReducers(builder) {
         builder
-            .addCase(register.fullfilled, (state, action) => {
+            .addCase(register.fulfilled, (state, action) => {
+                console.log(action.payload);
                 state.user = action.payload.user;
                 state.token = action.payload.token;
-                state.isLoggedIn = true;
+                state.IsLoggedIn = true;
             })
-            .addCase(login.fullfilled, (state, action) => {
+            .addCase(login.fulfilled, (state, action) => {
                 state.user = action.payload.user;
                 state.token = action.payload.token;
-                state.isLoggedIn = true;
+                state.IsLoggedIn = true;
             })
-            .addCase(logout.fullfilled, (state) => {
+            .addCase(logout.fulfilled, (state) => {
                 state.user = null;
                 state.token = null
-                state.isLoggedIn = false;
+                state.IsLoggedIn = false;
             })
             .addCase(refreshUser.pending, (state, action) => {
                 state.IsRefreshing = true;
@@ -35,11 +37,11 @@ export const AuthSlice = createSlice({
             .addCase(refreshUser.fulfilled, (state, action) => {
                 state.token = action.payload.token;
                 state.user = action.payload.user;
-                state.isLoggedIn = true;
-                state.isRefreshing = false;
+                state.IsLoggedIn = true;
+                state.IsRefreshing = false;
             })
             .addCase(refreshUser.rejected, (state, action) => {
-            
+                state.IsRefreshing = false;
             })
     }
 })

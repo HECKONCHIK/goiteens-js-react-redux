@@ -1,9 +1,8 @@
 import { filterReducer, taskReducer } from "./tasks/slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "./auth/slice";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { middleware } from "redux";
 
 const persistConfig = {
     key: 'auth',

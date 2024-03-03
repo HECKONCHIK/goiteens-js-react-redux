@@ -5,7 +5,7 @@ import { AppNav } from "components/AppNav";
 import { UserMenu } from "components/UserMenu";
 import { AuthMenu } from "components/AuthMenu";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "redux/auth/selector";
+import { selectIsLoggedIn } from "../../redux/auth/selector";
 
 export const AppBar = () => {
 
