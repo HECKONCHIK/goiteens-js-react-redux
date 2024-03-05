@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/auth/operations";
 
 export const LoginForm = () => {
-const dispatch = useDispatch
+    const dispatch = useDispatch();
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.currentTarget;

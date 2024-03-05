@@ -12,7 +12,8 @@ axios.defaults.headers.common.Authorization = '';
 
 export const register = createAsyncThunk('auth/signup', async (body, thunkAPI) => {
     try {
-        const res = await axios('users/signup', { body });
+        const res = await axios.post('users/signup', body);
+        setAuthHeader(res.data.token);
         return res.data
     } catch (error) {
         thunkAPI.rejectWithValue(error.massege)
@@ -20,8 +21,10 @@ export const register = createAsyncThunk('auth/signup', async (body, thunkAPI) =
 });
 
 export const login = createAsyncThunk('auth/login', async (body, thunkAPI) => {
+    console.log(body);
         try {
-        const res = await axios('users/login', { body });
+        const res = await axios.post('users/login', body);
+        setAuthHeader(res.data.token);
         return res.data
     } catch (error) {
         thunkAPI.rejectWithValue(error.massege)
@@ -30,7 +33,7 @@ export const login = createAsyncThunk('auth/login', async (body, thunkAPI) => {
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
         try {
-        await axios('users/logout');
+        await axios.post('users/logout');
         clearAuthHeader();
     } catch (error) {
         thunkAPI.rejectWithValue(error.massege)
@@ -38,16 +41,15 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
 });
 
 export const refreshUser = createAsyncThunk('auth/refresh', async (_, thunkAPI) => {
-
-    const state = thunkAPI.getState();
-    const persistedToken = state.auth.token;
-
-    console.log(persistedToken);
-
-    if (persistedToken === null) {
-    return thunkAPI.rejectWithValue('Unable to fetch user');
-    }
     try {
+        const state = thunkAPI.getState();
+
+        const persistedToken = state.auth.token;
+
+        if (persistedToken === null) {
+            return thunkAPI.rejectWithValue('Unable to fetch user');
+        }
+
         setAuthHeader(persistedToken);
         const res = await axios.get('users/me');
         console.log(res.data);
